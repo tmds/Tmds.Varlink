@@ -2,6 +2,7 @@ language: csharp
 dist: trusty
 sudo: false
 dotnet: 2.1
+mono: none
 env:
   global:
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
