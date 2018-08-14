@@ -26,6 +26,10 @@ namespace Tmds.Varlink.Tool
                     var info = await service.GetInfoAsync();
                     foreach (string interfaceName in info.interfaces)
                     {
+                        if (interfaceName == "org.varlink.service")
+                        {
+                            continue;
+                        }
                         string interfaceDescription =
                             (await service.GetInterfaceDescriptionAsync(new GetInterfaceDescriptionArgs { @interface = interfaceName })).description;
                         GenerateCodeForInterface(interfaceDescription);
