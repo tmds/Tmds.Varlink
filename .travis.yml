@@ -1,0 +1,15 @@
+language: csharp
+dist: trusty
+sudo: false
+dotnet: 2.1.3
+
+script:
+  - VERSION_SUFFIX="$(date +"%y%m%d")-$TRAVIS_BUILD_NUMBER"
+  - dotnet pack src/Tmds.Varlink --configuration Release --version-suffix $VERSION_SUFFIX --output .
+  - dotnet pack src/Tmds.Varlink.Tool --configuration Release --version-suffix $VERSION_SUFFIX --output .
+
+after_success:
+  - 'if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+  curl -H "X-NuGet-ApiKey: $NUGET_APIKEY" -T src/Tmds.Varlink/Tmds.Varlink.*.nupkg https://www.myget.org/F/tmds/api/v2/package ;
+  curl -H "X-NuGet-ApiKey: $NUGET_APIKEY" -T src/Tmds.Varlink.Tool/Tmds.Varlink.Tool.*.nupkg https://www.myget.org/F/tmds/api/v2/package ;
+     fi'
